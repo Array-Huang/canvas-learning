@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <canvas id="test" width="1200" height="500"></canvas>
+  <script type="text/javascript">
+    function drawCanvas(id, frameImg, picImg) {
+      var canvas = document.getElementById(id)
+      if (canvas == null || !canvas.getContext)
+          return false;
+      var context = canvas.getContext("2d");
+
+      var frameWidth = 350;
+      var frameHeight = 401;
+
+      var picWidth = 218;
+      var picHeight = 275;
+
+      /* 王源 */
+      context.drawImage(frameImg, 0, 0, frameWidth, frameHeight);
+      context.drawImage(picImg, 40, 5, picWidth, picHeight, 65, 58, picWidth, picHeight);
+
+      /* 王俊凯 */
+      context.drawImage(frameImg, frameWidth, 0, frameWidth, frameHeight);
+      context.drawImage(picImg, 390, 5, picWidth, picHeight, frameWidth + 65, 58, picWidth, picHeight);
+
+      /* 易烊千玺 */
+      context.drawImage(frameImg, frameWidth * 2, 0, frameWidth, frameHeight);
+      context.drawImage(picImg, 750, 5, picWidth, picHeight, frameWidth * 2 + 65, 58, picWidth, picHeight);
+      
+      // context.beginPath();
+      // context.arc(100, 100, 100, 0, Math.PI * 2);
+      // context.fill();
+    }
+
+    var frameGetPromise = new Promise(function(resolve) {
+      var frameImg = new Image();
+      frameImg.src = './picture-frame.jpg';
+      frameImg.onload = function() {
+        resolve(frameImg);
+      }
+    });
+
+    var picGetPromise = new Promise(function(resolve) {
+      var picImg = new Image();
+      picImg.src = './tfboys.jpg';
+      picImg.onload = function() {
+        resolve(picImg);
+      }
+    });
+
+    Promise.all([frameGetPromise, picGetPromise]).then(function(imgs) {
+      drawCanvas('test', imgs[0], imgs[1]);
+    });
+
+
+  </script>
+</body>
+</html>
