@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <canvas width="500" height="500" id="brick"></canvas>
+  <script type="text/javascript">
+    var unitLength = 20;
+    var colorR = 170;
+    var colorG = 0;
+    var colorB = 0;
+
+    function createRgbVal(r, g, b) {
+      return 'rgb(' + r + ',' + g + ',' + b + ')';
+    }
+
+    function drawPerHorizontalRow(ctx, nowW, nowH, limitW, limitH, penPointX, penPointY, startX) {
+      while(nowW <= limitW && nowH <= limitH) {
+        ctx.fillStyle = createRgbVal(colorR, colorG + penPointX / 2, colorB + penPointY / 2);
+        ctx.fillRect(penPointX, penPointY, unitLength * 2, unitLength);
+        nowW = (nowW === startX) ? nowW + unitLength * 2 : nowW + unitLength;
+        nowH += unitLength;
+        penPointX = nowW - unitLength;
+        penPointY = nowH;
+      }      
+    }
+
+    function drawHorizontal(ctx, totalW,totalH) {
+      var startX = 0;
+      var startY = 0;
+      var nowW = startX;
+      var nowH = startY;
+      var penPointX = startX;
+      var penPointY = startY;
+      var limitW = totalW - unitLength; // 在当前画布宽度下，最多能画多宽的砖块
+      var limitH = totalH - unitLength; // 在当前画布高度下，最多能画多高的砖块
+
+      while(startY <= totalH - unitLength) {
+        nowW = 0;
+        nowH = startY;
+        penPointX = 0;
+        penPointY = startY;
+        drawPerHorizontalRow(ctx, nowW, nowH, limitW, limitH, penPointX, penPointY, startX);
+        startY += unitLength * 4;
+      }
+
+      startX = unitLength * 4;
+      while(startX <= totalW - unitLength * 2) {
+        nowW = startX;
+        nowH = 0;
+        penPointX = startX;
+        penPointY = 0;
+        drawPerHorizontalRow(ctx, nowW, nowH, limitW, limitH, penPointX, penPointY, startX);
+        startX += unitLength * 4;
+      }
+    }
+
+    function drawPerVerticalRow(ctx, nowW, nowH, limitW, limitH, penPointX, penPointY, startX, startY) {
+      while(nowW <= limitW && nowH <= limitH) {
+        ctx.fillStyle = createRgbVal(colorR, colorG + penPointX / 2, colorB + penPointY / 2);
+        ctx.fillRect(penPointX, penPointY, unitLength, unitLength * 2);
+        nowH = (nowH === startY) ? nowH + unitLength * 2 : nowH + unitLength;
+        nowW += unitLength;
+        penPointX = nowW;
+        penPointY = nowH - unitLength;
+      }      
+    }
+
+    function drawVertical(ctx, totalW,totalH) {
+      var startX = 0;
+      var startY = unitLength;
+      var nowW = startX;
+      var nowH = startY;
+      var penPointX = startX;
+      var penPointY = startY;
+      var limitW = totalW - unitLength; // 在当前画布宽度下，最多能画多宽的砖块
+      var limitH = totalH - unitLength; // 在当前画布高度下，最多能画多高的砖块
+
+      while(startY <= totalH - unitLength * 2) {
+        nowW = 0;
+        nowH = startY;
+        penPointX = 0;
+        penPointY = startY;
+        drawPerVerticalRow(ctx, nowW, nowH, limitW, limitH, penPointX, penPointY, startX, startY);
+        startY += unitLength * 4;
+      }
+
+      startX = unitLength * 3;
+      startY = 0;
+      while(startX <= totalW - unitLength) {
+        nowW = startX;
+        nowH = 0;
+        penPointX = startX;
+        penPointY = 0;
+        drawPerVerticalRow(ctx, nowW, nowH, limitW, limitH, penPointX, penPointY, startX, startY);
+        startX += unitLength * 4;
+      }
+    }
+
+    (function () {
+      var canvas = document.getElementById('brick')
+      if (canvas == null || !canvas.getContext)
+          return false;
+      var context = canvas.getContext("2d");
+      drawHorizontal(context, canvas.width, canvas.height);
+      drawVertical(context, canvas.width, canvas.height);
+    })();
+  </script>
+</body>
+</html>
