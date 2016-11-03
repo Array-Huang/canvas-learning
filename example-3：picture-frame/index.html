@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
+  <script type="text/javascript" src="../vendor/bluebird.core.min.js"></script>
 </head>
 <body>
   <canvas id="test" width="1200" height="500"></canvas>
@@ -13,11 +14,11 @@
           return false;
       var context = canvas.getContext("2d");
 
-      var frameWidth = 350;
-      var frameHeight = 401;
+      var frameWidth = 350; // 相框缩放宽度
+      var frameHeight = 401; // 相框缩放高度
 
-      var picWidth = 218;
-      var picHeight = 275;
+      var picWidth = 218; // 图片缩放宽度
+      var picHeight = 275; // 图片缩放高度
 
       /* 王源 */
       context.drawImage(frameImg, 0, 0, frameWidth, frameHeight);
@@ -30,12 +31,9 @@
       /* 易烊千玺 */
       context.drawImage(frameImg, frameWidth * 2, 0, frameWidth, frameHeight);
       context.drawImage(picImg, 750, 5, picWidth, picHeight, frameWidth * 2 + 65, 58, picWidth, picHeight);
-      
-      // context.beginPath();
-      // context.arc(100, 100, 100, 0, Math.PI * 2);
-      // context.fill();
     }
 
+    /* 加载相框 */
     var frameGetPromise = new Promise(function(resolve) {
       var frameImg = new Image();
       frameImg.src = './picture-frame.jpg';
@@ -44,6 +42,7 @@
       }
     });
 
+    /* 加载照片 */
     var picGetPromise = new Promise(function(resolve) {
       var picImg = new Image();
       picImg.src = './tfboys.jpg';
@@ -52,6 +51,7 @@
       }
     });
 
+    /* 照片和相框都加载好了以后才开始画canvas */
     Promise.all([frameGetPromise, picGetPromise]).then(function(imgs) {
       drawCanvas('test', imgs[0], imgs[1]);
     });

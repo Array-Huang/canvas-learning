@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <canvas width="1000" height="1000" id="tic-tac-toe"></canvas>
+  <script type="text/javascript">
+    /* 各种变量 */
+    var margin = 50; // 棋盘离画布左边缘和上边缘的距离
+    var padding = 30; // 棋子离棋盘分隔线的距离，决定了棋子的大小
+    var width = 450; // 棋盘的宽度
+    var height = width; // 棋盘的高度，理论上应该跟宽度保持一致
+    var circleRadius = width / 3 / 2 - padding; // 圆棋子的半径
+    function drawChessboard(ctx) {
+      /* 画外边框 */
+      ctx.strokeRect(margin, margin, width, height);
+
+      /* 开始画棋盘的分隔线 */
+      ctx.beginPath();
+      /* 画第一条横分隔线 */
+      ctx.moveTo(margin, margin + height * 1 / 3);
+      ctx.lineTo(margin + width, margin + height * 1 / 3);
+      /* 画第二条横分隔线 */
+      ctx.moveTo(margin, margin + height * 2 / 3);
+      ctx.lineTo(margin + width, margin + height * 2 / 3);
+      /* 画第一条竖分隔线 */
+      ctx.moveTo(margin + width * 1 / 3, margin);
+      ctx.lineTo(margin + width * 1 / 3, margin + height);
+      /* 画第二条竖分隔线 */
+      ctx.moveTo(margin + width * 2 / 3, margin);
+      ctx.lineTo(margin + width * 2 / 3, margin + height);
+
+      ctx.stroke();
+    }
+
+    function drawChesspiece(ctx) {
+      ctx.beginPath();
+      /* 画第一个棋子，位于棋盘中央 */
+      ctx.arc(margin + width / 2, margin + height / 2, circleRadius, 0, Math.PI * 2);
+      /* 画第二个棋子，位于棋盘左上角 */
+      ctx.moveTo(margin + padding, margin + padding);
+      ctx.lineTo(margin + width / 3 - padding, margin + height / 3 - padding);
+      ctx.moveTo(margin + width / 3 - padding, margin + padding);
+      ctx.lineTo(margin + padding, margin + height / 3 - padding);
+
+      ctx.stroke();
+    }
+
+    function drawCanvas(id) {
+      var canvas = document.getElementById(id)
+      if (canvas == null || !canvas.getContext)
+          return false;
+      var context = canvas.getContext("2d");
+      drawChessboard(context); // 画棋盘
+      drawChesspiece(context); // 画棋子
+    }
+    drawCanvas('tic-tac-toe');
+  </script>
+</body>
+</html>
