@@ -7,57 +7,75 @@
 <body>
   <canvas width="500" height="500" id="brick"></canvas>
   <script type="text/javascript">
-    var unitLength = 20;
+    var unitLength = 20; // 单位长度，砖块的宽高比为2:1
+
+    /* 颜色基值（RGB） */
     var colorR = 170;
     var colorG = 0;
     var colorB = 0;
 
+    /* 拼接成RGB格式 */
     function createRgbVal(r, g, b) {
       return 'rgb(' + r + ',' + g + ',' + b + ')';
     }
 
+    /* 画一行水平的砖块，说是一行，其实是从左上方到右下方 */
     function drawPerHorizontalRow(ctx, nowW, nowH, limitW, limitH, penPointX, penPointY, startX) {
       while(nowW <= limitW && nowH <= limitH) {
-        ctx.fillStyle = createRgbVal(colorR, colorG + penPointX / 2, colorB + penPointY / 2);
-        ctx.fillRect(penPointX, penPointY, unitLength * 2, unitLength);
+        ctx.fillStyle = createRgbVal(colorR, colorG + penPointX / 2, colorB + penPointY / 2); // 根据下笔的基点来确定RGB值；其实这两者是没啥关系的，只是为了做到在视觉上有渐变的效果，因此将坐标与RGB值挂钩
+        ctx.fillRect(penPointX, penPointY, unitLength * 2, unitLength); // 正式填充一个横着的矩形
+        /* 
+          计算当前此行砖块所达到的宽度
+          铺设第一块砖时比较特殊，此时这行的宽度就等于砖的宽度；
+          但后面每铺设一块砖，由于有半块在水平方向上跟上一块砖是重叠的，因此只加半块砖的宽度，即一个单位长度
+        */
         nowW = (nowW === startX) ? nowW + unitLength * 2 : nowW + unitLength;
         nowH += unitLength;
-        penPointX = nowW - unitLength;
+        penPointX = nowW - unitLength; // 下一块砖下笔的基点是上一块砖的水平中央处。
         penPointY = nowH;
-      }      
+      }
     }
 
+    /* 画水平的砖块 */
     function drawHorizontal(ctx, totalW,totalH) {
+      /* 砖块开始的坐标 */
       var startX = 0;
       var startY = 0;
+
+      /* 当前水平行砖块所达到的宽度和高度 */
       var nowW = startX;
       var nowH = startY;
+
+      /* 下一块砖块下笔的基点 */
       var penPointX = startX;
       var penPointY = startY;
+
       var limitW = totalW - unitLength; // 在当前画布宽度下，最多能画多宽的砖块
       var limitH = totalH - unitLength; // 在当前画布高度下，最多能画多高的砖块
 
-      while(startY <= totalH - unitLength) {
-        nowW = 0;
+      /* 绘制左下方的部分 */
+      while(startY <= totalH - unitLength) { // 看下还够不够画一行（一行至少有一个砖块）砖块
+        nowW = 0; 
         nowH = startY;
         penPointX = 0;
         penPointY = startY;
         drawPerHorizontalRow(ctx, nowW, nowH, limitW, limitH, penPointX, penPointY, startX);
-        startY += unitLength * 4;
+        startY += unitLength * 4; // 向下画下一行
       }
 
+      /* 绘制右上方的部分 */
       startX = unitLength * 4;
-      while(startX <= totalW - unitLength * 2) {
+      while(startX <= totalW - unitLength * 2) { // 看下还够不够画一行（一行至少有一个砖块）砖块
         nowW = startX;
         nowH = 0;
         penPointX = startX;
         penPointY = 0;
         drawPerHorizontalRow(ctx, nowW, nowH, limitW, limitH, penPointX, penPointY, startX);
-        startX += unitLength * 4;
+        startX += unitLength * 4; // 向右画下一行
       }
     }
 
-    function drawPerVerticalRow(ctx, nowW, nowH, limitW, limitH, penPointX, penPointY, startX, startY) {
+    function drawPerVerticalRow(ctx, nowW, nowH, limitW, limitH, penPointX, penPointY, startY) {
       while(nowW <= limitW && nowH <= limitH) {
         ctx.fillStyle = createRgbVal(colorR, colorG + penPointX / 2, colorB + penPointY / 2);
         ctx.fillRect(penPointX, penPointY, unitLength, unitLength * 2);
@@ -83,7 +101,7 @@
         nowH = startY;
         penPointX = 0;
         penPointY = startY;
-        drawPerVerticalRow(ctx, nowW, nowH, limitW, limitH, penPointX, penPointY, startX, startY);
+        drawPerVerticalRow(ctx, nowW, nowH, limitW, limitH, penPointX, penPointY, startY);
         startY += unitLength * 4;
       }
 
@@ -94,7 +112,7 @@
         nowH = 0;
         penPointX = startX;
         penPointY = 0;
-        drawPerVerticalRow(ctx, nowW, nowH, limitW, limitH, penPointX, penPointY, startX, startY);
+        drawPerVerticalRow(ctx, nowW, nowH, limitW, limitH, penPointX, penPointY, startY);
         startX += unitLength * 4;
       }
     }
