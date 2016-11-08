@@ -33,7 +33,7 @@
     function drawWording(ctx, percent) {
       ctx.fillStyle = wordingColor;
       ctx.font = '48px serif';
-      ctx.fillText(percent + '%', 220, 200);
+      ctx.fillText(Math.floor(percent) + '%', 220, 200);
     }
 
     /* 清空画布 */
@@ -43,9 +43,9 @@
 
     /* 根据时间来计算当前已完成的百分比，超过100则返回false */
     function calculatePercent(timestamp) {
-      var percent = Math.ceil(timestamp / 100);
+      var percent = timestamp / 100;
       if (percent > 100) {
-        return false;
+        return 100;
       } else {
         return percent;
       }
@@ -56,11 +56,11 @@
       /* 每一帧绘画的步骤 */
       return function step(timestamp) {
         var percent = calculatePercent(timestamp);
-        if (percent === false) return false; // 超过100则停止动画
         cleanCanvas(ctx);
         drawBar(ctx);
         drawIndicator(ctx, percent);
         drawWording(ctx, percent);
+        if (percent === 100) return false; // 超过100则停止动画
         window.requestAnimationFrame(createStep(ctx));
       }
     }
