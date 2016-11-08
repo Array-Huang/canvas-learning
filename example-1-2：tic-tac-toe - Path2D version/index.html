@@ -35,17 +35,56 @@
       ctx.stroke();
     }
 
-    function drawChesspiece(ctx) {
-      ctx.beginPath();
-      /* 画第一个棋子，位于棋盘中央 */
-      ctx.arc(margin + width / 2, margin + height / 2, circleRadius, 0, Math.PI * 2);
-      /* 画第二个棋子，位于棋盘左上角 */
-      ctx.moveTo(margin + padding, margin + padding);
-      ctx.lineTo(margin + width / 3 - padding, margin + height / 3 - padding);
-      ctx.moveTo(margin + width / 3 - padding, margin + padding);
-      ctx.lineTo(margin + padding, margin + height / 3 - padding);
+    function createCricle() {
+      var circle = new Path2D();
+      /* 以在第一（左上）格为基准画圆形棋子 */
+      circle.arc(margin + width / 6, margin + height / 6, circleRadius, 0, Math.PI * 2);
+      return circle;
+    }
 
-      ctx.stroke();
+    function createCross() {
+      var cross = new Path2D();
+      /* 以在第一（左上）格为基准画交叉棋子 */
+      cross.moveTo(margin + padding, margin + padding);
+      cross.lineTo(margin + width / 3 - padding, margin + height / 3 - padding);
+      cross.moveTo(margin + width / 3 - padding, margin + padding);
+      cross.lineTo(margin + padding, margin + height / 3 - padding);
+
+      return cross;
+    }
+
+    function resetContextStatus(ctx) {
+      ctx.restore();
+      ctx.save();
+    }
+
+    function drawChesspiece(ctx) {
+      var circle = createCricle();
+      var cross = createCross();
+
+      ctx.save();
+      ctx.translate(width / 3, height / 3);
+      ctx.stroke(cross);
+      resetContextStatus(ctx);
+      ctx.stroke(circle);
+      resetContextStatus(ctx);
+      ctx.translate(width / 3, 0);
+      ctx.stroke(cross);
+      resetContextStatus(ctx);
+      ctx.translate(width / 3, height * 2 / 3);
+      ctx.stroke(circle);
+      resetContextStatus(ctx);
+      ctx.translate(0, height * 2 / 3);
+      ctx.stroke(cross);
+      resetContextStatus(ctx);
+      ctx.translate(width * 2 / 3, 0);
+      ctx.stroke(circle);
+      resetContextStatus(ctx);
+      ctx.translate(width * 2 / 3, height / 3);
+      ctx.stroke(cross);
+      resetContextStatus(ctx);
+      ctx.translate(0, height / 3);
+      ctx.stroke(circle);
     }
 
     function drawCanvas(id) {
