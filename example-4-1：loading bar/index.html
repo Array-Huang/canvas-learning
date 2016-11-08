@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script type="text/javascript" src="../vendor/requestAnimationFrame.polyfill.js"></script>
+</head>
+<body>
+  <canvas id="test" width="500" height="500" style="background-color:#000;"></canvas>
+  <script type="text/javascript">
+    var canvasWidth = 0; // 待初始化
+    var canvasHeight = 0; // 待初始化
+    var margin = 50; // 进度条距画布左方和上方的距离
+    var width = 400; // 进度条长度
+    var height = 100; // 进度条高度
+    var barColor = '#49f'; // 进度条颜色
+    var wordingColor = '#eee'; // 文字颜色
+
+    /* 画进度条外框 */
+    function drawBar(ctx) {
+      ctx.strokeStyle = barColor;
+      ctx.strokeRect(margin, margin, width, height);
+    }
+
+    /* 画进度条进度指示物 */
+    function drawIndicator(ctx, percent) {
+      var indicatorWidth = width / 100 * percent;
+      ctx.fillStyle = barColor;
+      ctx.fillRect(margin, margin, indicatorWidth, height);
+    }
+
+    /* 画“百分比”文字 */
+    function drawWording(ctx, percent) {
+      ctx.fillStyle = wordingColor;
+      ctx.font = '48px serif';
+      ctx.fillText(percent + '%', 220, 200);
+    }
+
+    /* 清空画布 */
+    function cleanCanvas(ctx) {
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    }
+
+    /* 根据时间来计算当前已完成的百分比，超过100则返回false */
+    function calculatePercent(timestamp) {
+      var percent = Math.ceil(timestamp / 100);
+      if (percent > 100) {
+        return false;
+      } else {
+        return percent;
+      }
+    }
+
+    /* 用闭包来保存context */
+    function createStep(ctx) {
+      /* 每一帧绘画的步骤 */
+      return function step(timestamp) {
+        var percent = calculatePercent(timestamp);
+        if (percent === false) return false; // 超过100则停止动画
+        cleanCanvas(ctx);
+        drawBar(ctx);
+        drawIndicator(ctx, percent);
+        drawWording(ctx, percent);
+        window.requestAnimationFrame(createStep(ctx));
+      }
+    }
+
+    function drawCanvas(id, frameImg, picImg) {
+      var canvas = document.getElementById(id)
+      if (canvas == null || !canvas.getContext)
+          return false;
+      var context = canvas.getContext("2d");
+      canvasWidth = canvas.width;
+      canvasHeight = canvas.height;
+      window.requestAnimationFrame(createStep(context)); // 一切准备妥当则启动动画
+    }
+
+    drawCanvas('test');
+  </script>
+</body>
+</html>
