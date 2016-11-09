@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script type="text/javascript" src="../libs/utils.js"></script>
+</head>
+<body>
+  <canvas width="500" height="500" id="test" style="background-color: #000;"></canvas>
+  <script type="text/javascript">
+    (function() {
+      var canvas = document.getElementById('test');
+      if (canvas == null || !canvas.getContext)
+          return false;
+      var context = canvas.getContext("2d");
+      canvasWidth = canvas.width;
+      canvasHeight = canvas.height;
+
+      // var mouse = window.utils.getMouseCoordinate(canvas);
+      // canvas.addEventListener('mousedown', function(evt) {
+      //   console.log(mouse);
+      // });
+
+      var touch = window.utils.captureTouch(canvas);
+      canvas.addEventListener('touchmove', function(evt) {
+        console.log(touch);
+      });
+    })();
+  </script>
+</body>
+</html>
