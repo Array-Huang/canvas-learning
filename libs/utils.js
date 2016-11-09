@@ -16,28 +16,37 @@ var calculateCoorInElement = function(originCoor, element) {
 }
 
 var utils = {
-  mouseCoorInited: false,
-  mouseCoor: {
+  mouseInited: false,
+  mouse: {
     x: null,
     y: null,
+    isPressed: false,
   },
 
   /* 获取鼠标在画布内的坐标 */
-  getMouseCoordinate: function(element) {
-    if (utils.mouseCoorInited) { // 单例模式
-      return utils.mouseCoor;
+  captureMouse: function(element) {
+    if (utils.mouseInited) { // 单例模式
+      return utils.mouse;
     }
+
+    element.addEventListener('mousedown', function() {
+      utils.mouse.isPressed = true;
+    });
+
+    element.addEventListener('mouseup', function() {
+      utils.mouse.isPressed = false;
+    });
 
     element.addEventListener('mousemove', function(evt) {
       var coor = calculateCoorInElement(evt, evt.target);
 
-      utils.mouseCoor.x = coor.x;
-      utils.mouseCoor.y = coor.y;
+      utils.mouse.x = coor.x;
+      utils.mouse.y = coor.y;
     });
 
-    utils.mouseCoorInited = true;
+    utils.mouseInited = true;
 
-    return utils.mouseCoor;
+    return utils.mouse;
   },
 
   touchInited: false,

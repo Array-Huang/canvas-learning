@@ -16,8 +16,8 @@
       canvasWidth = canvas.width;
       canvasHeight = canvas.height;
 
-      var mouse = window.utils.getMouseCoordinate(canvas);
-      canvas.addEventListener('mousedown', function(evt) {
+      var mouse = window.utils.captureMouse(canvas);
+      canvas.addEventListener('mousemove', function(evt) {
         console.log(mouse);
       });
 
