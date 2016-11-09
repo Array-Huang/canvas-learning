@@ -16,10 +16,10 @@
       canvasWidth = canvas.width;
       canvasHeight = canvas.height;
 
-      // var mouse = window.utils.getMouseCoordinate(canvas);
-      // canvas.addEventListener('mousedown', function(evt) {
-      //   console.log(mouse);
-      // });
+      var mouse = window.utils.getMouseCoordinate(canvas);
+      canvas.addEventListener('mousedown', function(evt) {
+        console.log(mouse);
+      });
 
       var touch = window.utils.captureTouch(canvas);
       canvas.addEventListener('touchmove', function(evt) {
