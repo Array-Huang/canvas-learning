@@ -3,11 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
+  <script type="text/javascript" src="../vendor/requestAnimationFrame.polyfill.js"></script>
+  <script type="text/javascript" src="../vendor/bluebird.core.min.js"></script>
   <script type="text/javascript" src="../libs/utils.js"></script>
+  <script type="text/javascript" src="./ball.class.js"></script>
 </head>
 <body>
   <canvas width="500" height="500" id="test" style="background-color: #000;"></canvas>
   <script type="text/javascript">
+    var BALL_SIZE = 50;
+    var canvasWidth = 0;
+    var canvasHeight = 0;
+
+    /* 清空画布 */
+    function cleanCanvas(ctx) {
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    }
+
+    function createStep(balls, ctx) {
+      return function step(timestamp) {
+        cleanCanvas(ctx);
+
+        var isAllDone = true;
+        for(var i = 0; i < balls.length; i ++) {
+          var ball = balls[i];
+          var coor = ball.getStatus(timestamp / 1000);
+          ctx.drawImage(ball.img, coor.y, coor.x, BALL_SIZE, BALL_SIZE);   
+
+          if(coor.y !== 0 || coor.v0 !== 0) {
+            isAllDone = false;
+          }
+        }
+
+        if(isAllDone) {
+          return false;
+        }
+
+        window.requestAnimationFrame(createStep(balls, ctx));
+      };
+    }
+
+    function createPromises(ballsParams) {
+      var promises = [];
+      for (var i = 0; i < ballsParams.length; i ++) {
+        promises.push(new Promise(function(resolve) {
+          var ballParams = ballsParams[i];
+          var _img = new Image();
+          _img.src = ballParams.imgUrl;
+          _img.onload = function() {
+            ballParams.img = _img;
+            resolve(new window.ball(ballParams));
+          };
+        }));
+      }
+      return promises;
+    }
+
     (function() {
       var canvas = document.getElementById('test');
       if (canvas == null || !canvas.getContext)
@@ -16,15 +67,48 @@
       canvasWidth = canvas.width;
       canvasHeight = canvas.height;
 
-      var mouse = window.utils.captureMouse(canvas);
-      canvas.addEventListener('mousemove', function(evt) {
-        console.log(mouse);
+      context.translate(0, 500);
+      context.rotate(Math.PI * 1.5);
+
+      var balls = [{
+        x: 0, // 绘制图片的基点，即图片的左上角
+        y: 300, // 绘制图片的基点，即图片的左上角
+        v0: 0, // 球当前的速度，为正数则表示方向向下，为负数则表示方向向上
+        t0: null, // 上次计算位移时记录的时间戳
+        imgUrl: './volleyball.png',
+      }, {
+        x: 100, // 绘制图片的基点，即图片的左上角
+        y: 400, // 绘制图片的基点，即图片的左上角
+        v0: 0, // 球当前的速度，为正数则表示方向向下，为负数则表示方向向上
+        t0: null, // 上次计算位移时记录的时间戳
+        imgUrl: './basketball.png',
+      }, {
+        x: 200, // 绘制图片的基点，即图片的左上角
+        y: 350, // 绘制图片的基点，即图片的左上角
+        v0: 0, // 球当前的速度，为正数则表示方向向下，为负数则表示方向向上
+        t0: null, // 上次计算位移时记录的时间戳
+        imgUrl: './football.png',
+      }, {
+        x: 300, // 绘制图片的基点，即图片的左上角
+        y: 150, // 绘制图片的基点，即图片的左上角
+        v0: 0, // 球当前的速度，为正数则表示方向向下，为负数则表示方向向上
+        t0: null, // 上次计算位移时记录的时间戳
+        imgUrl: './baseball.png',
+      }];
+
+      Promise.all(createPromises(balls)).then(function(balls) {
+        window.requestAnimationFrame(createStep(balls, context));
       });
 
-      var touch = window.utils.captureTouch(canvas);
-      canvas.addEventListener('touchmove', function(evt) {
-        console.log(touch);
-      });
+      // var mouse = window.utils.captureMouse(canvas);
+      // canvas.addEventListener('mousemove', function(evt) {
+      //   console.log(mouse);
+      // });
+
+      // var touch = window.utils.captureTouch(canvas);
+      // canvas.addEventListener('touchmove', function(evt) {
+      //   console.log(touch);
+      // });
     })();
   </script>
 </body>
