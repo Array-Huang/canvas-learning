@@ -11,9 +11,9 @@
 <body>
   <canvas width="500" height="500" id="test" style="background-color: #000;"></canvas>
   <script type="text/javascript">
-    var BALL_SIZE = 50;
-    var canvasWidth = 0;
-    var canvasHeight = 0;
+    var BALL_SIZE = 50; // 球的直径
+    var canvasWidth = 0; // 画布的宽度
+    var canvasHeight = 0; // 画布的高度
 
     /* 清空画布 */
     function cleanCanvas(ctx) {
@@ -22,27 +22,34 @@
 
     function createStep(balls, ctx) {
       return function step(timestamp) {
-        cleanCanvas(ctx);
+        cleanCanvas(ctx); // 画每一帧前都先清空画布
 
-        var isAllDone = true;
-        for(var i = 0; i < balls.length; i ++) {
+        var isAllDone = true; // “是否所有球都停下来了”的标志
+        for(var i = 0; i < balls.length; i ++) { // 循环控制每个球
           var ball = balls[i];
-          var coor = ball.getStatus(timestamp / 1000);
+          var coor = ball.getStatus(timestamp / 1000); // 获取球当前的状态
+
+          /* 
+            根据计算出的位置画出球来
+            但需要注意的是，由于我们画布的坐标轴顺时针旋转了270度，此时纵轴是x轴，而横轴的是y轴
+            因此我们需要把计算出来的坐标（为符合一般观念，x是横轴，y是纵轴）给倒过来
+           */
           ctx.drawImage(ball.img, coor.y, coor.x, BALL_SIZE, BALL_SIZE);   
 
-          if(coor.y !== 0 || coor.v0 !== 0) {
+          if(coor.y !== 0 || coor.v0 !== 0) { // 判断球是否停下来的标准是贴紧地面并且速度为0
             isAllDone = false;
           }
         }
 
-        if(isAllDone) {
+        if(isAllDone) { // 所有球停下来了就终止动画
           return false;
         }
 
-        window.requestAnimationFrame(createStep(balls, ctx));
+        window.requestAnimationFrame(createStep(balls, ctx)); // 继续下一帧的动画
       };
     }
 
+    /* 利用Promise来保证所有的图片都加载完成以后才开始动画 */
     function createPromises(ballsParams) {
       var promises = [];
       for (var i = 0; i < ballsParams.length; i ++) {
@@ -67,30 +74,31 @@
       canvasWidth = canvas.width;
       canvasHeight = canvas.height;
 
+      /* 为了尽量贴近概念中的坐标轴，让画布的坐标轴顺时针旋转270度，此时纵轴是x轴，横轴是y轴 */
       context.translate(0, 500);
       context.rotate(Math.PI * 1.5);
 
       var balls = [{
-        x: 0, // 绘制图片的基点，即图片的左上角
-        y: 300, // 绘制图片的基点，即图片的左上角
+        x: 0, // 绘制图片的基点，即图片的左下角
+        y: 300, // 绘制图片的基点，即图片的左下角
         v0: 0, // 球当前的速度，为正数则表示方向向下，为负数则表示方向向上
         t0: null, // 上次计算位移时记录的时间戳
         imgUrl: './volleyball.png',
       }, {
-        x: 100, // 绘制图片的基点，即图片的左上角
-        y: 400, // 绘制图片的基点，即图片的左上角
+        x: 100, // 绘制图片的基点，即图片的左下角
+        y: 400, // 绘制图片的基点，即图片的左下角
         v0: 0, // 球当前的速度，为正数则表示方向向下，为负数则表示方向向上
         t0: null, // 上次计算位移时记录的时间戳
         imgUrl: './basketball.png',
       }, {
-        x: 200, // 绘制图片的基点，即图片的左上角
-        y: 350, // 绘制图片的基点，即图片的左上角
+        x: 200, // 绘制图片的基点，即图片的左下角
+        y: 350, // 绘制图片的基点，即图片的左下角
         v0: 0, // 球当前的速度，为正数则表示方向向下，为负数则表示方向向上
         t0: null, // 上次计算位移时记录的时间戳
         imgUrl: './football.png',
       }, {
-        x: 300, // 绘制图片的基点，即图片的左上角
-        y: 150, // 绘制图片的基点，即图片的左上角
+        x: 300, // 绘制图片的基点，即图片的左下角
+        y: 150, // 绘制图片的基点，即图片的左下角
         v0: 0, // 球当前的速度，为正数则表示方向向下，为负数则表示方向向上
         t0: null, // 上次计算位移时记录的时间戳
         imgUrl: './baseball.png',
