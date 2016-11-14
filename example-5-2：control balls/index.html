@@ -63,12 +63,12 @@
       var mouseX = mouse.x;
       var mouseY = canvasHeight - mouse.y;
 
-      for(var i = 0; i < balls.length; i ++) {
+      for(var i = 0; i < balls.length; i ++) { // 遍历所有的球
         var ball = balls[i];
-        var ballCenterX = ball.x + BALL_SIZE / 2;
-        var ballCenterY = ball.y + BALL_SIZE / 2;
-        var distance = Math.sqrt(Math.pow(mouseX - ballCenterX, 2) + Math.pow(mouseY - ballCenterY, 2));
-        if (distance <= BALL_SIZE / 2) {
+        var ballCenterX = ball.x + BALL_SIZE / 2; // 获取球中心坐标
+        var ballCenterY = ball.y + BALL_SIZE / 2; // 获取球中心坐标
+        var distance = Math.sqrt(Math.pow(mouseX - ballCenterX, 2) + Math.pow(mouseY - ballCenterY, 2)); // 计算鼠标点击位置与球中心的距离
+        if (distance <= BALL_SIZE / 2) { // 如果鼠标点击位置与球中心的距离小于等于球的半径，则判断球被鼠标点选中了
           return ball;
         }
       }
@@ -119,15 +119,14 @@
       }];
 
       var mouse = window.utils.captureMouse(canvas);
-      Promise.all(createPromises(ballParams)).then(function(balls) {
+      Promise.all(createPromises(ballParams)).then(function(balls) { // 利用Promise来保证所有的图片都加载完成以后才开始动画
         window.requestAnimationFrame(createStep(balls, context)); // 启动自由落体动画
 
-        canvas.addEventListener('mousedown', function(evt) {
+        canvas.addEventListener('mousedown', function(evt) { // 鼠标按键被按下时触发
           var clickedBall = whichBallClicked(mouse, balls); // 判断是否有哪个球被点击中了
-          if (clickedBall === false) 
+          if (clickedBall === false) // 没有球被点中就什么都不做
             return;
-          clickedBall.control(canvas, mouse, BALL_SIZE);
-          
+          clickedBall.control(canvas, mouse, BALL_SIZE); // 让鼠标控制球
         });
       });
 

@@ -41,10 +41,12 @@ var pf = {
   },
 
   moveBall: function(mouse, ball, canvas, BALL_SIZE) {
+    // 需要注意的是，对于球来说，始终是以画布左下角作为坐标原点的
     return function() {
+      /* 使球的中心与鼠标保持一致，以此来计算绘制球的基点（即左下角） */
       ball.x = mouse.x - BALL_SIZE / 2;
       ball.x = ball.x < 0 ? 0 : ball.x;
-      ball.y = (canvas.height - mouse.y) - BALL_SIZE / 2;
+      ball.y = (canvas.height - mouse.y) - BALL_SIZE / 2; // 由于鼠标的坐标是以左上角为坐标原点的，因此需要转换坐标
       ball.y = ball.y < 0 ? 0 : ball.y;
     };
   },
@@ -85,12 +87,12 @@ window.ball.prototype = {
     this.v0 = 0; // 因为被控制住了，速度归零
     this.t0 = null; // “上次计算坐标”的时间戳重置
     var mouseMoveCb = pf.moveBall(mouse, this, element, BALL_SIZE);
-    element.addEventListener('mousemove', mouseMoveCb);
-    var mouseUpCb = function() {
+    element.addEventListener('mousemove', mouseMoveCb); // 鼠标移动时触发，用于保持球跟随鼠标移动
+    var mouseUpCb = function() { // 解绑事件，解除控制状态
       element.removeEventListener('mousemove', mouseMoveCb);
       element.removeEventListener('mouseup', mouseUpCb);
       nowBall.isControlled = false;
     };
-    element.addEventListener('mouseup', mouseUpCb);
+    element.addEventListener('mouseup', mouseUpCb); // 鼠标按键弹起时触发，相当于结束控制
   },
 };
