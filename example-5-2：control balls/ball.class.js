@@ -1,11 +1,25 @@
-var HIT_LOST_SPEED = 100;
+var HIT_LOST_SPEED = 50;
 var g = 600
 
 var pf = {
   calculateCoor: function(ball, t1) {
+    /* 
+      以下情况，只记录当前时间戳而不需要计算球坐标（即球静止不动）
+      - 第一次运行
+      - 球触底
+    */
+    if (!ball.t0 || (ball.y === 0 && ball.v0 === 0)) {
+      ball.t0 = t1;
+      return;
+    }
+
     /* 计算离上次位移经过的时间 */
     var deltaT = t1 - ball.t0;
     ball.t0 = t1;
+
+    if (ball.isControlled) { // 如果球被控制住了，则不改变它
+      return;
+    }
 
     /* 计算速度 */
     var newV = ball.v0 + g * deltaT;
@@ -25,6 +39,15 @@ var pf = {
       ball.v0 = newV; // 记录好球的新速度
     }
   },
+
+  moveBall: function(mouse, ball, canvas, BALL_SIZE) {
+    return function() {
+      ball.x = mouse.x - BALL_SIZE / 2;
+      ball.x = ball.x < 0 ? 0 : ball.x;
+      ball.y = (canvas.height - mouse.y) - BALL_SIZE / 2;
+      ball.y = ball.y < 0 ? 0 : ball.y;
+    };
+  },
 };
 
 window.ball = function(params) {
@@ -37,6 +60,7 @@ window.ball.prototype = {
   // y: 300, // 绘制图片的基点，即图片的左下角
   // v0: 0, // 球当前的速度，为正数则表示方向向下，为负数则表示方向向上
   // t0: null, // 上次计算位移时记录的时间戳
+  // isControlled: false, // 是否被控制住了
 
   /* 设置球的坐标 */
   setCoor: function(x, y) {
@@ -52,5 +76,21 @@ window.ball.prototype = {
       y: this.y,
       v0: this.v0,
     };
+  },
+
+  /* 控制住球 */
+  control: function(element, mouse, BALL_SIZE) {
+    var nowBall = this;
+    this.isControlled = true;
+    this.v0 = 0; // 因为被控制住了，速度归零
+    this.t0 = null; // “上次计算坐标”的时间戳重置
+    var mouseMoveCb = pf.moveBall(mouse, this, element, BALL_SIZE);
+    element.addEventListener('mousemove', mouseMoveCb);
+    var mouseUpCb = function() {
+      element.removeEventListener('mousemove', mouseMoveCb);
+      element.removeEventListener('mouseup', mouseUpCb);
+      nowBall.isControlled = false;
+    };
+    element.addEventListener('mouseup', mouseUpCb);
   },
 };

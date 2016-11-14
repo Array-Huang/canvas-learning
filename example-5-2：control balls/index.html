@@ -24,7 +24,6 @@
       return function step(timestamp) {
         cleanCanvas(ctx); // 画每一帧前都先清空画布
 
-        var isAllDone = true; // “是否所有球都停下来了”的标志
         for(var i = 0; i < balls.length; i ++) { // 循环控制每个球
           var ball = balls[i];
           var coor = ball.getStatus(timestamp / 1000); // 获取球当前的状态
@@ -35,14 +34,6 @@
             因此我们需要把计算出来的坐标（为符合一般观念，x是横轴，y是纵轴）给倒过来
            */
           ctx.drawImage(ball.img, coor.y, coor.x, BALL_SIZE, BALL_SIZE);   
-
-          if(coor.y !== 0 || coor.v0 !== 0) { // 判断球是否停下来的标准是贴紧地面并且速度为0
-            isAllDone = false;
-          }
-        }
-
-        if(isAllDone) { // 所有球停下来了就终止动画
-          return false;
         }
 
         window.requestAnimationFrame(createStep(balls, ctx)); // 继续下一帧的动画
@@ -66,6 +57,25 @@
       return promises;
     }
 
+    /* 判断鼠标是不是点到哪个球上了 */
+    function whichBallClicked(mouse, balls) {
+      /* 统一以画布左下角为坐标原点进行运算 */
+      var mouseX = mouse.x;
+      var mouseY = canvasHeight - mouse.y;
+
+      for(var i = 0; i < balls.length; i ++) {
+        var ball = balls[i];
+        var ballCenterX = ball.x + BALL_SIZE / 2;
+        var ballCenterY = ball.y + BALL_SIZE / 2;
+        var distance = Math.sqrt(Math.pow(mouseX - ballCenterX, 2) + Math.pow(mouseY - ballCenterY, 2));
+        if (distance <= BALL_SIZE / 2) {
+          return ball;
+        }
+      }
+
+      return false;
+    }
+
     (function() {
       var canvas = document.getElementById('test');
       if (canvas == null || !canvas.getContext)
@@ -78,40 +88,51 @@
       context.translate(0, 500);
       context.rotate(Math.PI * 1.5);
 
-      var balls = [{
+      var ballParams = [{
         x: 0, // 绘制图片的基点，即图片的左下角
         y: 300, // 绘制图片的基点，即图片的左下角
         v0: 0, // 球当前的速度，为正数则表示方向向下，为负数则表示方向向上
         t0: null, // 上次计算位移时记录的时间戳
+        isControlled: false,
         imgUrl: './volleyball.png',
       }, {
         x: 100, // 绘制图片的基点，即图片的左下角
         y: 400, // 绘制图片的基点，即图片的左下角
         v0: 0, // 球当前的速度，为正数则表示方向向下，为负数则表示方向向上
         t0: null, // 上次计算位移时记录的时间戳
+        isControlled: false,
         imgUrl: './basketball.png',
       }, {
         x: 200, // 绘制图片的基点，即图片的左下角
         y: 350, // 绘制图片的基点，即图片的左下角
         v0: 0, // 球当前的速度，为正数则表示方向向下，为负数则表示方向向上
         t0: null, // 上次计算位移时记录的时间戳
+        isControlled: false,
         imgUrl: './football.png',
       }, {
         x: 300, // 绘制图片的基点，即图片的左下角
         y: 150, // 绘制图片的基点，即图片的左下角
         v0: 0, // 球当前的速度，为正数则表示方向向下，为负数则表示方向向上
         t0: null, // 上次计算位移时记录的时间戳
+        isControlled: false,
         imgUrl: './baseball.png',
       }];
 
-      Promise.all(createPromises(balls)).then(function(balls) {
-        window.requestAnimationFrame(createStep(balls, context));
+      var mouse = window.utils.captureMouse(canvas);
+      Promise.all(createPromises(ballParams)).then(function(balls) {
+        window.requestAnimationFrame(createStep(balls, context)); // 启动自由落体动画
+
+        canvas.addEventListener('mousedown', function(evt) {
+          var clickedBall = whichBallClicked(mouse, balls); // 判断是否有哪个球被点击中了
+          if (clickedBall === false) 
+            return;
+          clickedBall.control(canvas, mouse, BALL_SIZE);
+          
+        });
       });
 
-      // var mouse = window.utils.captureMouse(canvas);
-      // canvas.addEventListener('mousemove', function(evt) {
-      //   console.log(mouse);
-      // });
+      
+      
 
       // var touch = window.utils.captureTouch(canvas);
       // canvas.addEventListener('touchmove', function(evt) {
