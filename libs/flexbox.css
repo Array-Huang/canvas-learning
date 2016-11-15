@@ -1,0 +1,102 @@
+/* 源自https://gist.github.com/HeGanjie/0289b5b16e2ee4b16030 */
+
+/* 给父元素设置为flex布局 */
+.flex {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+/* 
+ * 垂直排列的flex布局，需配合.flex使用
+ * 注意有可能有兼容性问题
+ * 理论上来说应该是兼容ios 4+、android 2.3+、winphone8+
+ * 但实测海马玩模拟器异常，可以给子元素添上 'display: block;' 来兼容
+ */
+.flex--column {
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -moz-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+/* 子元素在父元素内部水平方向 - 两端对齐，项目之间的间隔都相等 */
+.flex--justify-content--space-between {
+  -webkit-box-pack: justify;
+  -moz-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+/* 子元素在父元素内部水平方向 - 每个项目两侧的间隔相等。所以，项目之间的间隔比项目与边框的间隔大一倍。 */
+.flex--justify-content--space-around {
+  -webkit-box-pack: justify;  // 相当于 space-between
+  -moz-box-pack: justify;  // 相当于 space-between
+  -ms-flex-pack: distribute;
+  -webkit-justify-content: space-around;
+  justify-content: space-around;
+}
+
+/* 子元素在父元素内部水平方向 - 居中 */
+.flex--justify-content--center {
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+/* 子元素在父元素内部水平方向 - 左对齐 */
+.flex--justify-content--start {
+  -webkit-box-pack: start;
+  -moz-box-pack: start;
+  -ms-flex-pack: start;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
+}
+
+/* 子元素在父元素内部水平方向 - 右对齐 */
+.flex--justify-content--end {
+  -webkit-box-pack: end;
+  -moz-box-pack: end;
+  -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+}
+
+/* 子元素在父元素内部垂直方向 - 顶部对齐 */
+.flex--align-items--start {
+  -webkit-box-align: start;
+  -moz-box-align: start;
+  -ms-flex-align: start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+}
+
+/* 子元素在父元素内部垂直方向 - 中间对齐 */
+.flex--align-items--center {
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+/* 子元素在父元素内部剩余空间的分配比例 */
+.flex--box-flex-1 {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex-grow: 1;
+  -ms-flex-grow: 1;
+  flex-grow: 1;
+  // 在旧版的规范中，使用比例伸缩布局时，
+  // 子元素的内容长短不同会导致无法“等分”，
+  // 这个时候，我们需要给子元素设置一个'width: 0%;'
+  width: 0%;
+}

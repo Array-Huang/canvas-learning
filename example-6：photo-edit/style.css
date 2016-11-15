@@ -1,0 +1,40 @@
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: url(./background.jpg);
+  background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+canvas {
+  background-color: #000;
+}
+
+#editor {
+  top: 50px;
+  position: absolute;
+  left: 50%;
+  margin-left: -100px;
+}
+
+#watermark-samples-container {
+  width: 200px;
+  position: absolute;
+  top: 355px;
+  left: 50%;
+  margin-left: -100px;
+}
+
+#watermark-samples-container canvas {
+  width: 0%;
+  height: 77px;
+  margin-left: 2px;
+}
+
+#watermark-samples-container canvas:first-child {
+  margin-left: 0;
+}
