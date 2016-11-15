@@ -10,23 +10,30 @@ body {
   background-repeat: no-repeat;
 }
 
+.content-container {
+  padding-top: 50px;
+}
+
 canvas {
   background-color: #000;
 }
 
 #editor {
-  top: 50px;
-  position: absolute;
-  left: 50%;
-  margin-left: -100px;
+  // top: 50px;
+  // position: absolute;
+  // left: 50%;
+  // margin-left: -100px;
+  display: block;
+  margin: 0 auto 5px;
 }
 
 #watermark-samples-container {
   width: 200px;
-  position: absolute;
-  top: 355px;
-  left: 50%;
-  margin-left: -100px;
+  margin: 0 auto;
+  // position: absolute;
+  // top: 355px;
+  // left: 50%;
+  // margin-left: -100px;
 }
 
 #watermark-samples-container canvas {
@@ -37,4 +44,27 @@ canvas {
 
 #watermark-samples-container canvas:first-child {
   margin-left: 0;
+}
+
+#reset-btn {
+  width: 35px;
+  position: absolute;
+  right: 0;
+  top: 200px;
+}
+
+#submit-btn {
+  margin: 15px auto 0 auto;
+  width: 200px;
+  height: 30px;
+  box-sizing: border-box;
+  border: 1px solid #eee;
+  text-align: center;
+  line-height: 28px;
+  color: #eee;
+}
+
+#submit-btn:active {
+  color: yellow;
+  border: 1px solid yellow;
 }

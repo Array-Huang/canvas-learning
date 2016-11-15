@@ -9,16 +9,24 @@
   <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 <body>
-  <canvas width="200" height="300" id="editor"></canvas>
+  <div class="content-container">
+    <canvas width="200" height="300" id="editor"></canvas>
 
-  <div id="watermark-samples-container" class="flex flex--justify-content--space-between">
-    <canvas class="js-sample- flex--box-flex-1"></canvas>
-    <canvas class="js-sample- flex--box-flex-1"></canvas>
-    <canvas class="js-sample- flex--box-flex-1"></canvas>
-    <canvas class="js-sample- flex--box-flex-1"></canvas>
-    <canvas class="js-sample- flex--box-flex-1"></canvas>
+    <div id="watermark-samples-container" class="flex flex--justify-content--space-between">
+      <canvas width="200" height="300" data-index="0" class="js-sample flex--box-flex-1"></canvas>
+      <canvas width="200" height="300" data-index="1" class="js-sample flex--box-flex-1"></canvas>
+      <canvas width="200" height="300" data-index="2" class="js-sample flex--box-flex-1"></canvas>
+      <canvas width="200" height="300" data-index="3" class="js-sample flex--box-flex-1"></canvas>
+      <canvas width="200" height="300" data-index="4" class="js-sample flex--box-flex-1"></canvas>
+    </div>
+
+    <img id="reset-btn" src="./reset.png" />
+
+    <div id="submit-btn">生成图片</div>   
   </div>
 
+  <script type="text/javascript" src="../vendor/bluebird.core.min.js"></script>
+  <script type="text/javascript" src="./editor.js"></script>
   <script type="text/javascript" src="./main.js"></script>
 </body>
 </html>
