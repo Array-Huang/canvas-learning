@@ -6,7 +6,8 @@ var WATERMARK_SIZE = {
   width: 100,
   height: 77,
 };
-var editor = document.getElementById('editor');
+// var editor = document.getElementById('editor');
+
 var EDITOR_SIZE = {
   width: editor.width,
   height: editor.height,
@@ -52,14 +53,26 @@ function getSamplesElement(WATERMARK_LOCATION) {
   });
 
   Promise.all([photoPromise, watermarkPromise]).then(function(imgs) {
+    var editor = window.editorObject.init({
+      canvas: document.getElementById('editor'),
+      watermark: {
+        img: imgs[1],
+        coor: watermarkSamples[0].coor,
+        size: WATERMARK_SIZE,
+      },
+      photo: {
+        img: imgs[0],
+      },
+    });
     for (var i = 0; i < 5; i ++) {
       watermarkSamples[i].element.addEventListener('click', function(evt) {
-        cleanCanvas(editor);
-        drawWatermark(editor, imgs[1], watermarkSamples[evt.target.dataset.index].coor);
+        // cleanCanvas(editor);
+        // drawWatermark(editor, imgs[1], watermarkSamples[evt.target.dataset.index].coor);
+        editor.changeWatermarkCoor(watermarkSamples[evt.target.dataset.index].coor);
       });
       drawWatermark(watermarkSamples[i].element, imgs[1], watermarkSamples[i].coor);
     }
 
-    drawWatermark(editor, imgs[1], watermarkSamples[0].coor);
+    // drawWatermark(editor, imgs[1], watermarkSamples[0].coor);
   });
 })();
