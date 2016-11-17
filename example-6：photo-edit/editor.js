@@ -25,6 +25,7 @@ window.editorObject = {
   		y: 0,
   	},
   	rotate: 0,
+    initScale: 1,
   	scale: 1,
   },
 
@@ -49,6 +50,9 @@ window.editorObject = {
     /* 绑定手势事件 */
     var that = this;
     new window.AlloyFinger(this.canvas, {
+      multipointStart: function () {
+        that.photo.initScale = that.photo.scale;
+      },
       rotate: function (evt) {
         that._rotate(evt.angle);
       },
@@ -57,6 +61,7 @@ window.editorObject = {
       },
       pressMove: function (evt) {
         that._translate(evt.deltaX, evt.deltaY);
+        evt.preventDefault();
       },
     })
 
@@ -80,7 +85,7 @@ window.editorObject = {
   },
 
   _scale: function(scale) {
-    this.photo.scale = scale;
+    this.photo.scale = this.photo.initScale * scale;
     this._render();
   },
 
