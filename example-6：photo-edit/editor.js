@@ -56,13 +56,13 @@ window.editorObject = {
       rotate: function (evt) {
         that._rotate(evt.angle);
       },
-      pinch: function (evt) {
-        that._scale(evt.scale);
-      },
-      pressMove: function (evt) {
-        that._translate(evt.deltaX, evt.deltaY);
-        evt.preventDefault();
-      },
+      // pinch: function (evt) {
+      //   that._scale(evt.scale);
+      // },
+      // pressMove: function (evt) {
+      //   that._translate(evt.deltaX, evt.deltaY);
+      //   evt.preventDefault();
+      // },
     })
 
   	return this;
