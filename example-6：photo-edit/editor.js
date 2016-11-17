@@ -24,7 +24,7 @@ window.editorObject = {
   		x: 0,
   		y: 0,
   	},
-  	rotate: .5,
+  	rotate: 0,
     initScale: 1,
   	scale: 1,
   },
