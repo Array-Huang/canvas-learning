@@ -24,7 +24,7 @@ window.editorObject = {
   		x: 0,
   		y: 0,
   	},
-  	rotate: 0,
+  	rotate: .5,
     initScale: 1,
   	scale: 1,
   },
@@ -81,7 +81,7 @@ window.editorObject = {
 
   _rotate: function(angle) {
     console.log('angle：' + angle);
-    console.log('原先的rotate：' + this.photo.ratate);
+    console.log('原先的rotate：' + this.photo.rotate);
     this.photo.rotate += angle;
     this._render();
   },
