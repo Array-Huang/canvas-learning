@@ -54,15 +54,15 @@ window.editorObject = {
         that.photo.initScale = that.photo.scale;
       },
       rotate: function (evt) {
-        that._rotate(evt.angle * Math.PI / 180);
+        that._rotate(evt.angle * Math.PI / 180); // 这里的evt.angle是度数，而canvas使用的是弧度，需要先进行单位转换
       },
-      // pinch: function (evt) {
-      //   that._scale(evt.scale);
-      // },
-      // pressMove: function (evt) {
-      //   that._translate(evt.deltaX, evt.deltaY);
-      //   evt.preventDefault();
-      // },
+      pinch: function (evt) {
+        that._scale(evt.scale);
+      },
+      pressMove: function (evt) {
+        that._translate(evt.deltaX, evt.deltaY);
+        evt.preventDefault();
+      },
     })
 
   	return this;
