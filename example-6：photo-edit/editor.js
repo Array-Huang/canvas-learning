@@ -46,6 +46,20 @@ window.editorObject = {
 
   	this._render();
 
+    /* 绑定手势事件 */
+    var that = this;
+    new window.AlloyFinger(this.canvas, {
+      rotate: function (evt) {
+        that._rotate(evt.angle);
+      },
+      pinch: function (evt) {
+        that._scale(evt.scale);
+      },
+      pressMove: function (evt) {
+        that._translate(evt.deltaX, evt.deltaY);
+      },
+    })
+
   	return this;
   },
 
@@ -54,16 +68,20 @@ window.editorObject = {
   	this._render();
   },
 
-  translate: function() {
-
+  _translate: function(deltaX, deltaY) {
+    this.photo.translate.x += deltaX;
+    this.photo.translate.y += deltaY;
+    this._render();
   },
 
-  rotate: function() {
-
+  _rotate: function(angle) {
+    this.photo.rotate = angle;
+    this._render();
   },
 
-  scale: function() {
-
+  _scale: function(scale) {
+    this.photo.scale = scale;
+    this._render();
   },
 
   reset: function() {
