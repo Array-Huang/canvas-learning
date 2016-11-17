@@ -80,7 +80,7 @@ window.editorObject = {
   },
 
   _scale: function(scale) {
-    this.photo.scale *= scale;
+    this.photo.scale = scale;
     this._render();
   },
 
