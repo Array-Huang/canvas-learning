@@ -53,16 +53,16 @@ window.editorObject = {
       multipointStart: function () {
         that.photo.initScale = that.photo.scale;
       },
-      // rotate: function (evt) {
-      //   that._rotate(evt.angle);
+      rotate: function (evt) {
+        that._rotate(evt.angle);
+      },
+      // pinch: function (evt) {
+      //   that._scale(evt.scale);
       // },
-      pinch: function (evt) {
-        that._scale(evt.scale);
-      },
-      pressMove: function (evt) {
-        that._translate(evt.deltaX, evt.deltaY);
-        evt.preventDefault();
-      },
+      // pressMove: function (evt) {
+      //   that._translate(evt.deltaX, evt.deltaY);
+      //   evt.preventDefault();
+      // },
     })
 
   	return this;
@@ -80,6 +80,8 @@ window.editorObject = {
   },
 
   _rotate: function(angle) {
+    console.log('angle：' + angle);
+    console.log('原先的rotate：' + this.photo.ratate);
     this.photo.rotate += angle;
     this._render();
   },
