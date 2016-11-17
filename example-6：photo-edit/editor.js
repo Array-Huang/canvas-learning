@@ -82,6 +82,10 @@ window.editorObject = {
     return this;
   },
 
+  output: function() {
+    return this.canvas.toDataURL('image/jpeg', 0.8);
+  },
+
   _resetCanvas: function() {
   	this.context.restore();
   	this.context.save();

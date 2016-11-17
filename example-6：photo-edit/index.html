@@ -9,7 +9,7 @@
   <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 <body>
-  <div class="content-container">
+  <div id="editor-container">
     <canvas width="200" height="300" id="editor"></canvas>
 
     <div id="watermark-samples-container" class="flex flex--justify-content--space-between">
@@ -23,6 +23,11 @@
     <img id="reset-btn" src="./reset.png" />
 
     <div id="submit-btn">生成图片</div>   
+  </div>
+
+  <div id="display-container">
+    <img id="final-product" />
+    <div id="again-btn">再玩一遍</div>
   </div>
 
   <script type="text/javascript" src="../vendor/bluebird.core.min.js"></script>

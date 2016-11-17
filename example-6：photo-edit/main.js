@@ -65,8 +65,22 @@ function getSamplesElement(WATERMARK_LOCATION) {
       },
     });
 
+    /* 重置按钮 */
     document.getElementById('reset-btn').addEventListener('click', function() {
       editor.reset();
+    });
+
+    /* 生成图片的按钮 */
+    document.getElementById('submit-btn').addEventListener('click', function() {
+      document.getElementById('final-product').src = editor.output();
+      document.getElementById('editor-container').style.display = 'none';
+      document.getElementById('display-container').style.display = 'block';
+    });
+
+    /* 再玩一遍的按钮 */
+    document.getElementById('again-btn').addEventListener('click', function() {
+      document.getElementById('display-container').style.display = 'none';
+      document.getElementById('editor-container').style.display = 'block';
     });
 
     for (var i = 0; i < 5; i ++) {

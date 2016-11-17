@@ -10,7 +10,7 @@ body {
   background-repeat: no-repeat;
 }
 
-.content-container {
+#editor-container {
   padding-top: 50px;
 }
 
@@ -53,7 +53,7 @@ canvas {
   top: 200px;
 }
 
-#submit-btn {
+#submit-btn, #again-btn {
   margin: 15px auto 0 auto;
   width: 200px;
   height: 30px;
@@ -64,7 +64,17 @@ canvas {
   color: #eee;
 }
 
-#submit-btn:active {
+#submit-btn:active, #again-btn:active {
   color: yellow;
   border: 1px solid yellow;
+}
+
+#display-container {
+  display: none;
+  padding-top: 50px;
+}
+
+#final-product {
+  display: block;
+  margin: 0 auto;
 }
