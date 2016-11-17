@@ -54,7 +54,7 @@ window.editorObject = {
         that.photo.initScale = that.photo.scale;
       },
       rotate: function (evt) {
-        that._rotate(evt.angle);
+        that._rotate(evt.angle * Math.PI / 180);
       },
       // pinch: function (evt) {
       //   that._scale(evt.scale);
