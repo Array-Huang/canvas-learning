@@ -75,12 +75,12 @@ window.editorObject = {
   },
 
   _rotate: function(angle) {
-    this.photo.rotate = angle;
+    this.photo.rotate += angle;
     this._render();
   },
 
   _scale: function(scale) {
-    this.photo.scale = scale;
+    this.photo.scale *= scale;
     this._render();
   },
 
