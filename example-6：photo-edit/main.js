@@ -64,15 +64,16 @@ function getSamplesElement(WATERMARK_LOCATION) {
         img: imgs[0],
       },
     });
+
+    document.getElementById('reset-btn').addEventListener('click', function() {
+      editor.reset();
+    });
+
     for (var i = 0; i < 5; i ++) {
       watermarkSamples[i].element.addEventListener('click', function(evt) {
-        // cleanCanvas(editor);
-        // drawWatermark(editor, imgs[1], watermarkSamples[evt.target.dataset.index].coor);
         editor.changeWatermarkCoor(watermarkSamples[evt.target.dataset.index].coor);
       });
       drawWatermark(watermarkSamples[i].element, imgs[1], watermarkSamples[i].coor);
     }
-
-    // drawWatermark(editor, imgs[1], watermarkSamples[0].coor);
   });
 })();

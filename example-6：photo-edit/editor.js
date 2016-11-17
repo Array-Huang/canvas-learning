@@ -40,7 +40,7 @@ window.editorObject = {
   	this.photo.translate = {
   		x: this.canvasSize.w / 2,
   		y: this.canvasSize.h / 2,
-  	}
+  	};
 
   	this.context.save();
 
@@ -67,7 +67,19 @@ window.editorObject = {
   },
 
   reset: function() {
+    /* 恢复移动距离 */
+    this.photo.translate = {
+      x: this.canvasSize.w / 2,
+      y: this.canvasSize.h / 2,
+    };
+    /* 恢复旋转角度 */
+    this.photo.rotate = 0;
+    /* 恢复缩放 */
+    this.photo.scale = 1;
 
+    this._render();
+
+    return this;
   },
 
   _resetCanvas: function() {
