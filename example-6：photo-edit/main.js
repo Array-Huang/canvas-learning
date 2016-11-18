@@ -1,4 +1,4 @@
-var WATERMARK_LOCATION = [
+var WATERMARK_LOCATION = [ // 水印的几个可选位置
   { x: 5, y: 0}, { x: 5, y: 223}, { x: 50, y: 100}, { x: 100, y: 0}, { x: 100, y: 223}, 
 ];
 var watermarkSamples = getSamplesElement(WATERMARK_LOCATION);
@@ -6,23 +6,13 @@ var WATERMARK_SIZE = {
   width: 100,
   height: 77,
 };
-// var editor = document.getElementById('editor');
 
-var EDITOR_SIZE = {
-  width: editor.width,
-  height: editor.height,
-};
-
-function cleanCanvas(canvas) {
-  var context = canvas.getContext('2d');
-  context.clearRect(0, 0, 200, 300);
-}
-
+/* 用于在水印可选位置示例中绘制水印 */
 function drawWatermark(canvas, img, coor) {
   var context = canvas.getContext('2d');
   context.drawImage(img, coor.x, coor.y, WATERMARK_SIZE.width, WATERMARK_SIZE.height);
 }
-
+/* 整理一下水印可选位置示例的数据 */
 function getSamplesElement(WATERMARK_LOCATION) {
   var samples = [];
   var elements = document.querySelectorAll('.js-sample');
@@ -36,6 +26,7 @@ function getSamplesElement(WATERMARK_LOCATION) {
 }
 
 (function() {
+  /* 获取图片的promise */
   var photoPromise = new Promise(function(resolve) {
     var img = new Image();
     img.src = './photo.jpg';
@@ -43,7 +34,7 @@ function getSamplesElement(WATERMARK_LOCATION) {
       resolve(img);
     };
   });
-
+  /* 获取水印的promise */
   var watermarkPromise = new Promise(function(resolve) {
     var img = new Image();
     img.src = './watermark.png';
@@ -51,9 +42,9 @@ function getSamplesElement(WATERMARK_LOCATION) {
       resolve(img);
     };
   });
-
+  /* 成功获取图片和水印后再开始执行 */
   Promise.all([photoPromise, watermarkPromise]).then(function(imgs) {
-    var editor = window.editorObject.init({
+    var editor = window.editorObject.init({ // 传入参数初始化图片编辑器
       canvas: document.getElementById('editor'),
       watermark: {
         img: imgs[1],
@@ -84,10 +75,10 @@ function getSamplesElement(WATERMARK_LOCATION) {
     });
 
     for (var i = 0; i < 5; i ++) {
-      watermarkSamples[i].element.addEventListener('click', function(evt) {
+      watermarkSamples[i].element.addEventListener('click', function(evt) { // 点击水印可选位置示例后更新图片编辑器的水印位置
         editor.changeWatermarkCoor(watermarkSamples[evt.target.dataset.index].coor);
       });
-      drawWatermark(watermarkSamples[i].element, imgs[1], watermarkSamples[i].coor);
+      drawWatermark(watermarkSamples[i].element, imgs[1], watermarkSamples[i].coor); // 绘制水印可选位置示例
     }
   });
 })();

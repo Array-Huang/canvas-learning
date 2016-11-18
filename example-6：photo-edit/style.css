@@ -19,10 +19,6 @@ canvas {
 }
 
 #editor {
-  // top: 50px;
-  // position: absolute;
-  // left: 50%;
-  // margin-left: -100px;
   display: block;
   margin: 0 auto 5px;
 }
@@ -30,10 +26,6 @@ canvas {
 #watermark-samples-container {
   width: 200px;
   margin: 0 auto;
-  // position: absolute;
-  // top: 355px;
-  // left: 50%;
-  // margin-left: -100px;
 }
 
 #watermark-samples-container canvas {
