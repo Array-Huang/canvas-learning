@@ -37,6 +37,9 @@
 - 练习触控手势：pressmove / pinch / rotate。
 - 练习canvas的变形相关API：translate / scale / rotate。
 
+## 附 **思维导图 - canvas常用api**
+![思维导图 - canvas常用api][10]
+
 
   [1]: https://array-huang.github.io/canvas-learning/example-1-1%EF%BC%9Atic-tac-toe
   [2]: https://array-huang.github.io/canvas-learning/example-1-2%EF%BC%9Atic-tac-toe%20-%20Path2D%20version
@@ -47,3 +50,4 @@
   [7]: https://array-huang.github.io/canvas-learning/example-5-1%EF%BC%9Aballs
   [8]: https://array-huang.github.io/canvas-learning/example-5-2%EF%BC%9Acontrol%20balls
   [9]: https://array-huang.github.io/canvas-learning/example-6%EF%BC%9Aphoto-edit
+  [10]: https://array-huang.github.io/canvas-learning/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE%20-%20canvas%E5%B8%B8%E7%94%A8api.png
